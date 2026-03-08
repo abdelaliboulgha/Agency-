@@ -1,0 +1,43 @@
+import React, { useRef } from 'react'
+import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { useCursor } from '../context/CursorContext'
+
+export default function MagneticButton({ children, className = '', onClick }) {
+  const ref = useRef(null)
+  const { setIsHovering } = useCursor()
+
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+
+  const springX = useSpring(x, { stiffness: 150, damping: 15 })
+  const springY = useSpring(y, { stiffness: 150, damping: 15 })
+
+  const handleMouseMove = (e) => {
+    if (!ref.current) return
+    const rect = ref.current.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const centerY = rect.top + rect.height / 2
+    x.set((e.clientX - centerX) * 0.3)
+    y.set((e.clientY - centerY) * 0.3)
+  }
+
+  const handleMouseLeave = () => {
+    x.set(0)
+    y.set(0)
+    setIsHovering(false)
+  }
+
+  return (
+    <motion.button
+      ref={ref}
+      style={{ x: springX, y: springY }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      onMouseEnter={() => setIsHovering(true)}
+      onClick={onClick}
+      className={className}
+    >
+      {children}
+    </motion.button>
+  )
+}
