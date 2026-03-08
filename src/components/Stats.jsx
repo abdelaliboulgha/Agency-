@@ -9,7 +9,7 @@ function StatItem({ end, suffix = '', label }) {
 
   useEffect(() => {
     if (isInView) startCounting()
-  }, [isInView])
+  }, [isInView, startCounting])
 
   return (
     <motion.div
