@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { useCountUp } from '../hooks/useCountUp'
+import { useLanguage } from '../context/LanguageContext'
 
-function StatItem({ end, suffix = '', label }) {
+function StatItem({ end, suffix = '', labelKey }) {
+  const { t } = useLanguage()
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const { count, startCounting } = useCountUp(end, 2000)
@@ -23,12 +25,14 @@ function StatItem({ end, suffix = '', label }) {
       <div className="text-6xl md:text-8xl font-bold text-charcoal mb-2">
         {count}{suffix}
       </div>
-      <div className="text-charcoal/50 text-sm font-medium uppercase tracking-widest">{label}</div>
+      <div className="text-charcoal/50 text-sm font-medium uppercase tracking-widest">{t(labelKey)}</div>
     </motion.div>
   )
 }
 
 export default function Stats() {
+  const { t } = useLanguage()
+
   return (
     <section className="py-24 md:py-40 px-6 md:px-16 lg:px-24 bg-white border-t border-black/10">
       <motion.p
@@ -37,13 +41,13 @@ export default function Stats() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
       >
-        Studio
+        {t('stats.label')}
       </motion.p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-6 max-w-4xl mx-auto">
-        <StatItem end={24} label="Awwward Awards" />
-        <StatItem end={20} label="Years of Experience" />
-        <StatItem end={400} suffix="+" label="Projects Delivered" />
+        <StatItem end={24} labelKey="stats.awards" />
+        <StatItem end={20} labelKey="stats.experience" />
+        <StatItem end={400} suffix="+" labelKey="stats.projects" />
       </div>
     </section>
   )

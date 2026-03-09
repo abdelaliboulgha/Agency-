@@ -1,20 +1,22 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-
-const sectors = [
-  { name: 'VC & Private Equity', gradient: 'from-violet-600 to-indigo-800' },
-  { name: 'SaaS', gradient: 'from-sky-500 to-cyan-700' },
-  { name: 'Energy', gradient: 'from-amber-500 to-yellow-700' },
-  { name: 'Property', gradient: 'from-stone-500 to-neutral-700' },
-  { name: 'Food', gradient: 'from-green-500 to-emerald-700' },
-  { name: 'Retail', gradient: 'from-rose-500 to-red-700' },
-]
+import { useLanguage } from '../context/LanguageContext'
 
 export default function Sectors() {
   const [hovered, setHovered] = useState(null)
+  const { t } = useLanguage()
+
+  const sectors = [
+    { nameKey: 'sectors.vc', gradient: 'from-violet-600 to-indigo-800' },
+    { nameKey: 'sectors.saas', gradient: 'from-sky-500 to-cyan-700' },
+    { nameKey: 'sectors.energy', gradient: 'from-amber-500 to-yellow-700' },
+    { nameKey: 'sectors.property', gradient: 'from-stone-500 to-neutral-700' },
+    { nameKey: 'sectors.food', gradient: 'from-green-500 to-emerald-700' },
+    { nameKey: 'sectors.retail', gradient: 'from-rose-500 to-red-700' },
+  ]
 
   return (
-    <section className="py-24 md:py-40 px-6 md:px-16 lg:px-24 border-t border-black/10 relative overflow-hidden">
+    <section id="sectors" className="py-24 md:py-40 px-6 md:px-16 lg:px-24 border-t border-black/10 relative overflow-hidden">
       {/* Background image reveal */}
       <AnimatePresence>
         {hovered !== null && (
@@ -35,13 +37,13 @@ export default function Sectors() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
       >
-        Sectors
+        {t('sectors.label')}
       </motion.p>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
         {sectors.map((sector, i) => (
           <motion.div
-            key={sector.name}
+            key={sector.nameKey}
             className={`relative p-8 md:p-10 rounded-2xl border border-black/10 cursor-default transition-all duration-300 ${
               hovered === i ? 'border-charcoal' : ''
             }`}
@@ -49,10 +51,11 @@ export default function Sectors() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: i * 0.08 }}
+            animate={hovered === i ? { y: -6, scale: 1.03 } : { y: 0, scale: 1 }}
             onMouseEnter={() => setHovered(i)}
             onMouseLeave={() => setHovered(null)}
           >
-            <span className="text-lg md:text-2xl font-bold text-charcoal">{sector.name}</span>
+            <span className="text-lg md:text-2xl font-bold text-charcoal">{t(sector.nameKey)}</span>
           </motion.div>
         ))}
       </div>

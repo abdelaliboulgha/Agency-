@@ -3,16 +3,23 @@ import { motion } from 'framer-motion'
 import Marquee from './Marquee'
 import TextReveal from './TextReveal'
 import { useCursor } from '../context/CursorContext'
+import { useLanguage } from '../context/LanguageContext'
 
 export default function Hero() {
   const { setIsHovering } = useCursor()
+  const { t } = useLanguage()
 
   const headlineLines = [
-    <span key="1" className="block">A global strategic branding</span>,
-    <span key="2" className="block">&amp; digital agency expertly</span>,
-    <span key="3" className="block">creating impactful experiences</span>,
-    <span key="4" className="block">for ambitious brands.</span>,
+    <span key="1" className="block">{t('hero.line1')}</span>,
+    <span key="2" className="block">{t('hero.line2')}</span>,
+    <span key="3" className="block">{t('hero.line3')}</span>,
+    <span key="4" className="block">{t('hero.line4')}</span>,
   ]
+
+  function scrollToCaseStudies() {
+    const el = document.querySelector('#case-studies')
+    if (el) el.scrollIntoView({ behavior: 'smooth' })
+  }
 
   return (
     <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
@@ -29,7 +36,7 @@ export default function Hero() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.6 }}
         >
-          Strategic Branding Agency
+          {t('hero.subtitle')}
         </motion.p>
 
         <TextReveal
@@ -43,19 +50,20 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2, duration: 0.6 }}
         >
-          {/* Play Showreel button */}
+          {/* Play Showreel button — scrolls to case studies */}
           <motion.button
             className="relative w-32 h-32 rounded-full border-2 border-charcoal flex items-center justify-center text-xs font-bold uppercase tracking-widest text-charcoal hover:bg-accent hover:border-accent transition-colors"
             animate={{ scale: [1, 1.04, 1] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
+            onClick={scrollToCaseStudies}
           >
-            <span className="text-center leading-tight">Play<br />Showreel</span>
+            <span className="text-center leading-tight whitespace-pre-line">{t('hero.playShowreel')}</span>
           </motion.button>
 
           <div className="text-sm text-charcoal/50 max-w-sm">
-            Award-winning creative agency<br />delivering world-class digital experiences
+            {t('hero.tagline')}
           </div>
         </motion.div>
       </div>
@@ -67,7 +75,7 @@ export default function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.8, duration: 0.6 }}
       >
-        <span className="text-xs text-charcoal/40 uppercase tracking-widest">Scroll</span>
+        <span className="text-xs text-charcoal/40 uppercase tracking-widest">{t('hero.scroll')}</span>
         <motion.div
           className="w-px h-12 bg-charcoal/20"
           animate={{ scaleY: [0, 1, 0] }}

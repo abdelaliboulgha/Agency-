@@ -1,5 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import { useLanguage } from '../context/LanguageContext'
 
 const insights = [
   {
@@ -23,8 +24,10 @@ const insights = [
 ]
 
 export default function Insights() {
+  const { t } = useLanguage()
+
   return (
-    <section className="py-24 md:py-40 px-6 md:px-16 lg:px-24 border-t border-black/10">
+    <section id="insights" className="py-24 md:py-40 px-6 md:px-16 lg:px-24 border-t border-black/10">
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
         <motion.h2
           className="text-4xl md:text-5xl font-bold text-charcoal"
@@ -33,16 +36,17 @@ export default function Insights() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          Latest Insights
+          {t('insights.title')}
         </motion.h2>
         <motion.a
-          href="#"
+          href="#insights"
           className="text-charcoal/50 text-sm font-medium hover:text-accent transition-colors"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
+          title="Coming soon"
         >
-          View all articles →
+          {t('insights.viewAll')}
         </motion.a>
       </div>
 
