@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
 import { useCursor } from '../context/CursorContext'
 
 export default function CustomCursor() {
   const { isHovering } = useCursor()
+  const [isDarkBg, setIsDarkBg] = useState(false)
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
 
@@ -13,8 +14,15 @@ export default function CustomCursor() {
 
   useEffect(() => {
     const move = (e) => {
-      mouseX.set(e.clientX - 20)
-      mouseY.set(e.clientY - 20)
+      mouseX.set(e.clientX - 12)
+      mouseY.set(e.clientY - 12)
+
+      // Detect dark background
+      const el = document.elementFromPoint(e.clientX, e.clientY)
+      if (el) {
+        const darkParent = el.closest('.bg-charcoal')
+        setIsDarkBg(!!darkParent)
+      }
     }
     window.addEventListener('mousemove', move)
     return () => window.removeEventListener('mousemove', move)
@@ -23,17 +31,20 @@ export default function CustomCursor() {
   // Don't render on mobile
   if (typeof window !== 'undefined' && window.innerWidth < 768) return null
 
+  const borderColor = isDarkBg ? '#FFFFFF' : '#0A0A0A'
+  const fillColor = isDarkBg ? '#FFFFFF' : '#0A0A0A'
+
   return (
     <motion.div
       className="fixed top-0 left-0 z-[9999] pointer-events-none hidden md:block"
       style={{ x, y }}
     >
       <motion.div
-        className="w-10 h-10 rounded-full border-2 border-charcoal"
+        className="w-6 h-6 rounded-full border-2"
+        style={{ borderColor }}
         animate={{
           scale: isHovering ? 1.5 : 1,
-          mixBlendMode: isHovering ? 'difference' : 'normal',
-          backgroundColor: isHovering ? '#0A0A0A' : 'transparent',
+          backgroundColor: isHovering ? fillColor : 'transparent',
         }}
         transition={{ duration: 0.2 }}
       />

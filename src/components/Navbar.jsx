@@ -5,7 +5,7 @@ import MobileMenu from './MobileMenu'
 import { useCursor } from '../context/CursorContext'
 import { useLanguage } from '../context/LanguageContext'
 
-const languages = ['UK', 'FR', 'DE']
+const languages = ['UK', 'FR', 'AR']
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
