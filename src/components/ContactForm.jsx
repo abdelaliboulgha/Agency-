@@ -33,13 +33,7 @@ export default function ContactForm() {
       setErrors(e)
       return
     }
-    const budgetLabels = {
-      budget_5k: t('contact.budget1'),
-      budget_5k_15k: t('contact.budget2'),
-      budget_15k_50k: t('contact.budget3'),
-      budget_50k_plus: t('contact.budget4'),
-    }
-    const budgetDisplay = budgetLabels[form.budget] || 'N/A'
+    const budgetDisplay = form.budget ? `$${form.budget}` : 'N/A'
     const subject = encodeURIComponent(`New Project Inquiry from ${form.name}`)
     const body = encodeURIComponent(
       `Name: ${form.name}\nEmail: ${form.email}\nCompany: ${form.company || 'N/A'}\nBudget: ${budgetDisplay}\n\nMessage:\n${form.message}`
@@ -143,17 +137,15 @@ export default function ContactForm() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.25 }}
                 >
-                  <select
+                  <input
+                    type="number"
+                    min="0"
+                    max="10000000"
+                    placeholder={t('contact.budgetPlaceholder')}
                     value={form.budget}
                     onChange={handleChange('budget')}
-                    className={`${inputClass('budget')} appearance-none`}
-                  >
-                    <option value="" disabled className="bg-charcoal">{t('contact.budgetPlaceholder')}</option>
-                    <option value="budget_5k" className="bg-charcoal">{t('contact.budget1')}</option>
-                    <option value="budget_5k_15k" className="bg-charcoal">{t('contact.budget2')}</option>
-                    <option value="budget_15k_50k" className="bg-charcoal">{t('contact.budget3')}</option>
-                    <option value="budget_50k_plus" className="bg-charcoal">{t('contact.budget4')}</option>
-                  </select>
+                    className={inputClass('budget')}
+                  />
                 </motion.div>
               </div>
 
