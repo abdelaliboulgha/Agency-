@@ -1,27 +1,49 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { useCursor } from '../context/CursorContext'
-
-const pillars = [
-  {
-    title: 'Brand Power',
-    items: ['Brand Strategy & Positioning', 'Go-To-Market Strategy', 'Content Strategy', 'Visual Identity', 'Brand Naming'],
-  },
-  {
-    title: 'Digital Impact',
-    items: ['Digital Strategy', 'Websites & Platforms', 'Web App Development', 'Software Development', 'CMS', 'SEO Systems'],
-  },
-  {
-    title: 'Marketing Performance',
-    items: ['Campaign Strategy', 'CRM Implementation', 'B2B Lead Gen', 'RevOps', 'Inbound Marketing', 'ABM'],
-  },
-]
+import { useLanguage } from '../context/LanguageContext'
 
 export default function Capabilities() {
   const { setIsHovering } = useCursor()
+  const { t } = useLanguage()
+
+  const pillars = [
+    {
+      title: t('capabilities.brandPower'),
+      items: [
+        t('capabilities.brandStrategy'),
+        t('capabilities.goToMarket'),
+        t('capabilities.contentStrategy'),
+        t('capabilities.visualIdentity'),
+        t('capabilities.brandNaming'),
+      ],
+    },
+    {
+      title: t('capabilities.digitalImpact'),
+      items: [
+        t('capabilities.digitalStrategy'),
+        t('capabilities.websites'),
+        t('capabilities.webApp'),
+        t('capabilities.software'),
+        t('capabilities.cms'),
+        t('capabilities.seo'),
+      ],
+    },
+    {
+      title: t('capabilities.marketingPerf'),
+      items: [
+        t('capabilities.campaign'),
+        t('capabilities.crm'),
+        t('capabilities.b2b'),
+        t('capabilities.revops'),
+        t('capabilities.inbound'),
+        t('capabilities.abm'),
+      ],
+    },
+  ]
 
   return (
-    <section className="py-24 md:py-40 px-6 md:px-16 lg:px-24 border-t border-black/10">
+    <section id="what-we-do" className="py-24 md:py-40 px-6 md:px-16 lg:px-24 border-t border-black/10">
       <motion.p
         className="text-xs font-bold uppercase tracking-[0.3em] text-charcoal/40 mb-16"
         initial={{ opacity: 0 }}
@@ -29,7 +51,7 @@ export default function Capabilities() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        Our Capabilities
+        {t('capabilities.label')}
       </motion.p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">

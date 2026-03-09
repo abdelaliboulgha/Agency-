@@ -1,28 +1,31 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import ExpertiseCard from './ExpertiseCard'
-
-const cards = [
-  {
-    number: '01',
-    title: 'Digital First Branding',
-    description: 'We build brands that are born digital, designed for modern audiences, and built to scale across every touchpoint and platform.',
-  },
-  {
-    number: '02',
-    title: 'Web & Digital Products',
-    description: 'From complex web applications to polished marketing sites, we craft digital products that perform beautifully and convert powerfully.',
-  },
-  {
-    number: '03',
-    title: 'Immersive Digital Experiences',
-    description: 'Interactive storytelling, motion-rich interfaces, and data-driven personalization that captivates and converts.',
-  },
-]
+import { useLanguage } from '../context/LanguageContext'
 
 export default function Expertise() {
+  const { t } = useLanguage()
+
+  const cards = [
+    {
+      number: '01',
+      title: t('expertise.card1.title'),
+      description: t('expertise.card1.desc'),
+    },
+    {
+      number: '02',
+      title: t('expertise.card2.title'),
+      description: t('expertise.card2.desc'),
+    },
+    {
+      number: '03',
+      title: t('expertise.card3.title'),
+      description: t('expertise.card3.desc'),
+    },
+  ]
+
   return (
-    <section className="py-24 md:py-40 px-6 md:px-16 lg:px-24 border-t border-black/10">
+    <section id="who-we-are" className="py-24 md:py-40 px-6 md:px-16 lg:px-24 border-t border-black/10">
       <div className="flex flex-col lg:flex-row gap-16">
         {/* Sticky headline */}
         <div className="lg:w-2/5">
@@ -33,7 +36,7 @@ export default function Expertise() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
             >
-              Our Expertise
+              {t('expertise.label')}
             </motion.p>
             <motion.h2
               className="text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight"
@@ -42,7 +45,7 @@ export default function Expertise() {
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
             >
-              Digital expertise that moves brands forward.
+              {t('expertise.title')}
             </motion.h2>
           </div>
         </div>

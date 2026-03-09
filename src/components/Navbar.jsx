@@ -3,21 +3,35 @@ import { motion, AnimatePresence } from 'framer-motion'
 import MagneticButton from './MagneticButton'
 import MobileMenu from './MobileMenu'
 import { useCursor } from '../context/CursorContext'
+import { useLanguage } from '../context/LanguageContext'
 
-const navLinks = ['What we do', 'Sectors', 'Case studies', 'Who we are', 'Insights', 'Contact']
 const languages = ['UK', 'FR', 'DE']
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [activeLang, setActiveLang] = useState('UK')
   const { setIsHovering } = useCursor()
+  const { language, setLanguage, t } = useLanguage()
+
+  const navLinks = [
+    { label: t('nav.whatWeDo'), href: '#what-we-do' },
+    { label: t('nav.sectors'), href: '#sectors' },
+    { label: t('nav.caseStudies'), href: '#case-studies' },
+    { label: t('nav.whoWeAre'), href: '#who-we-are' },
+    { label: t('nav.insights'), href: '#insights' },
+    { label: t('nav.contact'), href: '#contact' },
+  ]
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  function scrollToSection(href) {
+    const el = document.querySelector(href)
+    if (el) el.scrollIntoView({ behavior: 'smooth' })
+  }
 
   return (
     <>
@@ -46,13 +60,13 @@ export default function Navbar() {
           <nav className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
               <a
-                key={link}
-                href="#"
+                key={link.href}
+                href={link.href}
                 className="text-sm font-medium text-charcoal/70 hover:text-accent transition-colors relative group"
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
               >
-                {link}
+                {link.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-accent transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
@@ -65,9 +79,9 @@ export default function Navbar() {
               {languages.map((lang) => (
                 <button
                   key={lang}
-                  onClick={() => setActiveLang(lang)}
+                  onClick={() => setLanguage(lang)}
                   className={`text-xs font-medium px-2 py-1 rounded transition-colors ${
-                    activeLang === lang
+                    language === lang
                       ? 'text-accent'
                       : 'text-charcoal/50 hover:text-charcoal'
                   }`}
@@ -82,8 +96,9 @@ export default function Navbar() {
             {/* CTA Button */}
             <MagneticButton
               className="hidden md:block bg-charcoal text-white text-sm font-medium px-5 py-2.5 rounded-full hover:bg-accent hover:text-charcoal transition-colors"
+              onClick={() => scrollToSection('#start-project')}
             >
-              Start a project
+              {t('nav.startProject')}
             </MagneticButton>
 
             {/* Hamburger - mobile */}
@@ -102,7 +117,13 @@ export default function Navbar() {
       </motion.header>
 
       <AnimatePresence>
-        {menuOpen && <MobileMenu onClose={() => setMenuOpen(false)} links={navLinks} languages={languages} />}
+        {menuOpen && (
+          <MobileMenu
+            onClose={() => setMenuOpen(false)}
+            links={navLinks}
+            languages={languages}
+          />
+        )}
       </AnimatePresence>
     </>
   )

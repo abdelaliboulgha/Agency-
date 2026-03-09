@@ -1,6 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import PortfolioCard from './PortfolioCard'
+import { useLanguage } from '../context/LanguageContext'
 
 const projects = [
   { title: 'Build The Bandwagon', description: 'Brand Strategy & Digital Platform', gradient: 'bg-gradient-to-br from-violet-600 to-indigo-700' },
@@ -12,8 +13,10 @@ const projects = [
 ]
 
 export default function Portfolio() {
+  const { t } = useLanguage()
+
   return (
-    <section className="bg-charcoal py-24 md:py-40 px-6 md:px-16 lg:px-24">
+    <section id="case-studies" className="bg-charcoal py-24 md:py-40 px-6 md:px-16 lg:px-24">
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
         <motion.h2
           className="text-4xl md:text-6xl font-bold text-white max-w-sm"
@@ -22,17 +25,18 @@ export default function Portfolio() {
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
         >
-          View our latest work
+          {t('portfolio.title')}
         </motion.h2>
         <motion.a
-          href="#"
+          href="#case-studies"
           className="text-white/50 text-sm font-medium hover:text-accent transition-colors underline-offset-4 hover:underline"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
+          title="Coming soon"
         >
-          View all projects →
+          {t('portfolio.viewAll')}
         </motion.a>
       </div>
 

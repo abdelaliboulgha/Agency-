@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useCursor } from '../context/CursorContext'
 
@@ -9,8 +9,24 @@ export default function PortfolioCard({ title, description, gradient, index }) {
     target: ref,
     offset: ['start end', 'end start'],
   })
+  const [tilt, setTilt] = useState({ x: 0, y: 0 })
 
   const y = useTransform(scrollYProgress, [0, 1], ['-8%', '8%'])
+
+  function handleMouseMove(e) {
+    if (!ref.current) return
+    const rect = ref.current.getBoundingClientRect()
+    const cx = rect.left + rect.width / 2
+    const cy = rect.top + rect.height / 2
+    const rotateY = ((e.clientX - cx) / (rect.width / 2)) * 8
+    const rotateX = -((e.clientY - cy) / (rect.height / 2)) * 8
+    setTilt({ x: rotateX, y: rotateY })
+  }
+
+  function handleMouseLeave() {
+    setTilt({ x: 0, y: 0 })
+    setIsHovering(false)
+  }
 
   return (
     <motion.div
@@ -21,7 +37,13 @@ export default function PortfolioCard({ title, description, gradient, index }) {
       viewport={{ once: true }}
       transition={{ duration: 0.7, delay: (index % 3) * 0.1 }}
       onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
+      onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
+      animate={{
+        rotateX: tilt.x,
+        rotateY: tilt.y,
+      }}
+      style={{ perspective: 1000, transformStyle: 'preserve-3d' }}
     >
       {/* Parallax background */}
       <motion.div
